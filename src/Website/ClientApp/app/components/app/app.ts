@@ -1,5 +1,6 @@
 import { Aurelia, PLATFORM } from 'aurelia-framework';
 import { Router, RouterConfiguration } from 'aurelia-router';
+import * as $ from "jquery";
 
 export class App {
     router: Router;
@@ -16,12 +17,12 @@ export class App {
             title: 'Home'
         },
         {
-            route: 'reports',
-            name: 'reports',
+            route: 'forms',
+            name: 'forms',
             settings: { icon: 'file' },
             moduleId: PLATFORM.moduleName('../reports/reports'),
             nav: true,
-            title: 'Reports'
+            title: 'Forms'
         },
         {
             route: 'counter',
@@ -31,16 +32,24 @@ export class App {
             nav: false,
             title: 'Counter'
         }, {
-            route: 'fetch-data',
-            name: 'fetchdata',
+            route: 'assign-clubs',
+            name: 'assign-clubs',
             settings: { icon: 'th-list' },
-            moduleId: PLATFORM.moduleName('../fetchdata/fetchdata'),
+            moduleId: PLATFORM.moduleName('../tools/AssignClubs'),
             nav: true,
-            title: 'Fetch data'
+            title: 'Assign Clubs'
         }]);
 
         router["username"] = window["$Environment"].username;
 
         this.router = router;
+    }
+
+    activate() {
+        $(document).on('click', '.navbar-collapse.in', function (e) {
+            if ($(e.target).is('a') && $(e.target).attr('class') != 'dropdown-toggle') {
+                $(this).collapse('hide');
+            }
+        }); 
     }
 }

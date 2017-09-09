@@ -61,5 +61,7 @@ namespace ClubExtensions.Reports.Models
                 }
             }
         }
+
+        public DateTime? LastAttendance { get; set; }
     }
 }

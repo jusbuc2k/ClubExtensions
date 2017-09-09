@@ -1,0 +1,49 @@
+<template>
+    <h1>Assign Clubs</h1>
+
+    <div class="alert alert-danger" if.bind="errorMessage">
+        ${errorMessage}
+    </div>
+
+    <div class="alert alert-success" if.bind="success">
+        Clubs were succesfully assigned.
+    </div>
+
+    <button if.bind="!previewList" class="btn btn-default" click.delegate="previewClicked()">Preview Assignments</button>
+
+    <form if.bind="previewList">
+        <p>
+            There are ${ changeCount } changes that will be applied.
+        </p>
+
+        <p if.bind="changeCount > 0">
+            <a href="" click.delegate="cancelClicked()">Cancel</a>
+            <button class="btn btn-primary" click.delegate="applyChangesClicked()">Apply</button>
+        </p>
+    </form>
+
+    <table if.bind="previewList" class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Grade</th>
+                <th>Gender</th>
+                <th>Old Club</th>
+                <th>New Club</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr repeat.for="clubber of previewList" class="">
+                <td>${ clubber.firstName } ${ clubber.lastName }</td>
+                <td>${ clubber.birthDate }</td>
+                <td>${ clubber.grade }</td>
+                <td>${ clubber.gender }</td>
+                <td>${ clubber.oldClubName }</td>
+                <td>${ clubber.newClubName }
+                    <span if.bind="clubber.isChange" class="glyphicon glyphicon-asterisk" aria-hidden="true"></span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</template>

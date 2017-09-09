@@ -110,6 +110,24 @@ namespace PcoApiClient
             }
         }
 
+        public async Task<HttpResponseMessage> Post<T>(string path, Models.PcoSingleResponse<T> data)
+        {
+            var request = CreateRequest(HttpMethod.Post, path);
+
+            request.Content = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(data));
+
+            return await EnsureClient().SendAsync(request);
+        }
+
+        public async Task<HttpResponseMessage> Patch<T>(string path, Models.PcoSingleResponse<T> data)
+        {
+            var request = CreateRequest(new HttpMethod("PATCH"), path);
+
+            request.Content = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(data));
+
+            return await EnsureClient().SendAsync(request);
+        }
+
         public Task<Models.PcoSingleResponse<Models.PcoOrganization>> GetOrganization()
         {
             return this.Get<Models.PcoOrganization>("people/v2");
@@ -118,6 +136,35 @@ namespace PcoApiClient
         public async Task RefreshList(int listID)
         {
             var response = await EnsureClient().SendAsync(this.CreateRequest(HttpMethod.Post, $"people/v2/lists/{listID}/run"));
+
+            response.EnsureSuccessStatusCode();
+        }
+
+        public async Task CreatePersonFieldData(string personID, Models.PcoFieldDatum data)
+        {
+            var response = await Post($"people/v2/people/{personID}/field_data", new Models.PcoSingleResponse<Models.PcoFieldDatum>()
+            {
+                Data = new Models.PcoDataRecord<Models.PcoFieldDatum>()
+                {
+                    Type = "FieldDatum",
+                    Attributes = data
+                }
+            });
+
+            response.EnsureSuccessStatusCode();
+        }
+
+        public async Task UpdatePersonFieldData(string personID, string datumID, Models.PcoFieldDatum data)
+        {
+            var response = await Patch($"people/v2/people/{personID}/field_data/{datumID}", new Models.PcoSingleResponse<Models.PcoFieldDatum>()
+            {
+                Data = new Models.PcoDataRecord<Models.PcoFieldDatum>()
+                {
+                    ID = datumID,
+                    Type = "FieldDatum",
+                    Attributes = data
+                }
+            });
 
             response.EnsureSuccessStatusCode();
         }
