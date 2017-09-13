@@ -3,25 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using Microsoft.AspNetCore.Authorization;
+using PcoApiClient.Models;
 
 namespace Website.Controllers
 {
+    [Authorize]
     public class ApiController : Controller
     {
         private readonly PcoApiClient.PcoApiClient _client;
         private readonly Models.PcoTenant _tenant;
+        private readonly Services.IPeopleCache _peopleCache;
 
         public ApiController(PcoApiClient.PcoApiClient client, Models.PcoTenant tenant)
         {
             _client = client;
             _tenant = tenant;
+            //_peopleCache = peopleCache;
         }
 
         [HttpPost]
         public async Task<dynamic> PreviewClubAssignments()
         {
+            await _client.RefreshList(_tenant.ClubberListID);
             var locations = await _client.GetList<PcoApiClient.Models.PcoCheckInsLocation>($"check_ins/v2/events/{_tenant.EventID}/locations", pagesToLoad: int.MaxValue);
             var clubbers = await _client.GetList<PcoApiClient.Models.PcoPeoplePerson>($"people/v2/lists/{_tenant.ClubberListID}/people", pagesToLoad: int.MaxValue, includes: new string[] { "field_data" });
             var assignments = new List<Models.ClubAssignment>();
@@ -99,7 +103,7 @@ namespace Website.Controllers
                     return true;
                 });
 
-                var clubDatum = fieldData.FirstOrDefault(x => x.Attributes.FieldDefinitionID == _tenant.ClubFieldDefinitionID);
+                var clubDatum = fieldData.FirstOrDefault(x => x.Relationships["field_definition"].Data.ToObject<PcoApiClient.Models.PcoRecord>().ID == _tenant.ClubFieldDefinitionID);
 
                 assignments.Add(new Models.ClubAssignment()
                 {
@@ -150,5 +154,22 @@ namespace Website.Controllers
 
             return this.NoContent();
         }
+        
+        [Route("[controller]/Cache")]
+        public async Task<IActionResult> CheckCache()
+        {
+            return View();
+        }
+
+        //[Route("[controller]/Cache/Refresh")]
+        //[HttpPost]
+        //public async Task<IActionResult> RefreshCache()
+        //{
+        //    var clubbers = await _pcoClient.GetList<PcoPeoplePerson>($"people/v2/lists/{_tenant.ClubberListID}/people", pagesToLoad: int.MaxValue, includes: new string[] { "field_data", "households" });
+        //    var parents = await _pcoClient.GetList<PcoPeoplePerson>($"people/v2/households", pagesToLoad: int.MaxValue, includes: new string[] { "phone_numbers", "emails" });
+            
+
+
+        //}
     }
 }

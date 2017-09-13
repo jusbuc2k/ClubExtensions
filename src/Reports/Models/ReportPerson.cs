@@ -7,11 +7,23 @@ namespace ClubExtensions.Reports.Models
 {
     public class ReportPerson
     {
+        public string PersonID { get; set; }
+
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
 
         public string ClubName { get; set; }
+
+        public string HouseholdID { get; set; }
+
+        public string HouseholdName { get; set; }
+
+        public string PrimaryContactName { get; set; }
+
+        public string PrimaryContactEmail { get; set; }
+
+        public string PrimaryContactPhone { get; set; }
 
         public DateTime? BirthDate { get; set; }
 
