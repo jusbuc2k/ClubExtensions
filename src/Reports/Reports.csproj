@@ -71,6 +71,8 @@
     <Compile Include="SqlServerTypes\Loader.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Roster.rdlc" />
+    <EmbeddedResource Include="KidsByClub.rdlc" />
     <EmbeddedResource Include="Households.rdlc" />
     <EmbeddedResource Include="ClubPointSheet.rdlc" />
     <None Include="packages.config" />

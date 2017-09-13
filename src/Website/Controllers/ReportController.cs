@@ -22,13 +22,11 @@ namespace Website.Controllers
             _tenant = tenant;
         }
 
-        public async Task<IActionResult> PointSheet()
+        private async Task<IEnumerable<ClubExtensions.Reports.Models.ReportPerson>> GetClubberList()
         {
-            string mimeType;
-
             await _pcoClient.RefreshList(_tenant.ClubberListID);
 
-            var people = await _pcoClient.GetList<PcoPeoplePerson>($"people/v2/lists/{_tenant.ClubberListID}/people", pagesToLoad: int.MaxValue, includes: new string[] { "field_data" }); 
+            var people = await _pcoClient.GetList<PcoPeoplePerson>($"people/v2/lists/{_tenant.ClubberListID}/people", pagesToLoad: int.MaxValue, includes: new string[] { "field_data" });
             var reportData = new List<ClubExtensions.Reports.Models.ReportPerson>();
 
             foreach (var person in people.Data)
@@ -49,14 +47,43 @@ namespace Website.Controllers
                     LastName = person.Attributes.LastName,
                     ClubName = club,
                     Grade = person.Attributes.Grade,
-                    BirthDate = person.Attributes.BirthDate
+                    BirthDate = person.Attributes.BirthDate,
+                    Gender = person.Attributes.Gender
                 });
             }
 
+            return reportData;
+        }
+
+        public async Task<IActionResult> PointSheet()
+        {
+            string mimeType;
+
+            var reportData = await this.GetClubberList();
+
             var buffer = ClubExtensions.Reports.ReportHelper.RenderReport("ClubPointSheet", "ReportData", reportData, "pdf", out mimeType);
 
-            // fix for PDF embedding in IE which requires a file name
-            // controller.Response.AddHeader("Content-Disposition", (download ? "attachment" : "inline") + "; filename=" + fileName);
+            return new FileContentResult(buffer, mimeType);
+        }
+
+        public async Task<IActionResult> KidsByClub()
+        {
+            string mimeType;
+
+            var reportData = await this.GetClubberList();
+
+            var buffer = ClubExtensions.Reports.ReportHelper.RenderReport("KidsByClub", "ReportData", reportData, "pdf", out mimeType);
+
+            return new FileContentResult(buffer, mimeType);
+        }
+
+        public async Task<IActionResult> Roster()
+        {
+            string mimeType;
+
+            var reportData = await this.GetClubberList();
+
+            var buffer = ClubExtensions.Reports.ReportHelper.RenderReport("Roster", "ReportData", reportData, "pdf", out mimeType);
 
             return new FileContentResult(buffer, mimeType);
         }

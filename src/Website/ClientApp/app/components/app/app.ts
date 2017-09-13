@@ -22,7 +22,7 @@ export class App {
             settings: { icon: 'file' },
             moduleId: PLATFORM.moduleName('../reports/reports'),
             nav: true,
-            title: 'Forms'
+            title: 'Forms & Reports'
         },
         {
             route: 'counter',
