@@ -89,25 +89,7 @@ namespace Website.Services
 
                 var result = new PcoListResponse<PcoPeoplePerson>();
                 var list = new List<PcoPeoplePerson>();
-
-                for (int i = 0; i < primaryContactIDs.Count; i += 25)
-                {
-                    //var idFilter = string.Join(",", primaryContactIDs.GetRange(i, Math.Min(25, primaryContactIDs.Count-i)));
-                    //var phones = await _pcoClient.GetList<PcoApiClient.Models.PcoPhoneNumber>($"people/v2/people/{idFilter}/phone_numbers", pagesToLoad: int.MaxValue, includes: new string[] { "phone_numbers", "emails" });
-                    //var primaryPhone = phones.Data.FirstOrDefault(x => x.Attributes.Primary);
-
-                    //if (primaryPhone == null)
-                    //{
-                    //    primaryPhone = phones.Data.First();
-                    //}
-
-                    //if (primaryPhone != null)
-                    //{
-                    //    result.Data.First(x => x.Attributes.)
-                    //}
-                    //// result.Data
-                }
-
+            
                 cacheEntry.SlidingExpiration = TimeSpan.FromMinutes(15);
 
                 return result;
@@ -137,8 +119,8 @@ namespace Website.Services
                     SubGroup = subGroup,
                     Grade = person.Attributes.Grade,
                     BirthDate = person.Attributes.BirthDate,
-                    Gender = person.Attributes.Gender,
-                    PrimaryContactPhone = person.Relationships.GetData<IEnumerable<PcoPhoneNumber>>("phone_numbers").Select(s => s.Number).FirstOrDefault()
+                    Gender = person.Attributes.Gender
+//                    PrimaryContactPhone = person.Relationships.GetData<IEnumerable<PcoPhoneNumber>>("phone_numbers").Select(s => s.Number).FirstOrDefault()
                 };
 
                 var household = people.GetRelated<PcoPeopleHousehold>(person, "households").FirstOrDefault();
