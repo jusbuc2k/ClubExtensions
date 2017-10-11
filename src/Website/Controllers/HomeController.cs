@@ -101,7 +101,7 @@ namespace WebApplicationBasic.Controllers
         {
             await this.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-            return Redirect("https://accounts.planningcenteronline.com/");
+            return Redirect(_pcoAuthOptions.LogoutUrl);
         }
 
     }

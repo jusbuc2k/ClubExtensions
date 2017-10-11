@@ -11,8 +11,12 @@ export class AssignClubs {
     public changeCount: number = 0;
     public success: boolean = false;
     public errorMessage: string;
+    public isWorking: boolean = false;
 
     async previewClicked() {
+        this.isWorking = true;
+        this.errorMessage = null;
+
         var result = await this.http.fetch("/api/PreviewClubAssignments", {
             credentials: 'same-origin',
             method: "post",
@@ -20,20 +24,41 @@ export class AssignClubs {
 
         var preview = await result.json();
 
-        this.previewList = preview.list;
+        this.previewList = preview.list.map(clubber => {
+            return Object.assign(clubber, {
+                applyChange: !clubber.oldClubName
+            });
+        });
+
+        this.isWorking = false;
+
         this.changeCount = preview.changeCount;
+    }
+
+    checkAll() {
+        this.previewList.forEach(item => {
+            item.applyChange = item.isChange;
+        });
     }
 
     cancelClicked() {
         this.previewList = null;
+        this.errorMessage = null;
         this.changeCount = 0;
     }
 
     async applyChangesClicked() {
+        let changes = this.previewList.filter(x => x.isChange && x.applyChange);
+
+        if (changes.length <= 0) {
+            this.errorMessage = "No changes selected to apply.";
+            return;
+        }
+        
         var result = await this.http.fetch("/api/AssignClubs", {
             credentials: 'same-origin',
             method: "post",
-            body: json(this.previewList.filter(x => x.isChange))
+            body: json(changes)
         });
 
         if (!result.ok) {

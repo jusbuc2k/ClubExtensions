@@ -15,6 +15,8 @@ namespace ClubExtensions.Reports.Models
 
         public string ClubName { get; set; }
 
+        public string SubGroup { get; set; }
+
         public string HouseholdID { get; set; }
 
         public string HouseholdName { get; set; }

@@ -92,10 +92,13 @@ namespace WebApplicationBasic
 
                     return new Website.Models.PcoTenant()
                     {
+                        OrganizationID = orgResponse.Data.ID,
                         Organization = orgResponse.Data.Attributes
                     };
                 }).Result;
             });
+
+            services.AddScoped<Website.Services.PcoHelper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

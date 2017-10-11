@@ -12,6 +12,8 @@ namespace PcoApiClient
 
         public string MeUrl { get; set; } = "https://api.planningcenteronline.com/people/v2/me";
 
+        public string LogoutUrl { get; set; } = "https://accounts.planningcenteronline.com/";
+
         public string GenerateLoginUrl(string clientID, string returnUrl, IEnumerable<string> scopes)
         {
             var url = new StringBuilder(this.AuthLoginUrl);

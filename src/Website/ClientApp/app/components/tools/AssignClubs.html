@@ -5,28 +5,34 @@
         ${errorMessage}
     </div>
 
+    <div class="spinner" if.bind="isWorking">
+        <i class="glyphicon glyphicon-time"></i>
+        Please wait...
+    </div>
+
     <div class="alert alert-success" if.bind="success">
         Clubs were succesfully assigned.
     </div>
 
-    <button if.bind="!previewList" class="btn btn-default" click.delegate="previewClicked()">Preview Assignments</button>
+    <button if.bind="!previewList && !isWorking" class="btn btn-default" click.delegate="previewClicked()">Preview Assignments</button>
 
     <form if.bind="previewList">
-        <p>
-            There are ${ changeCount } changes that will be applied.
-        </p>
-
         <p if.bind="changeCount > 0">
+            <button class="btn btn-primary" click.delegate="applyChangesClicked()">Apply Selected</button>
             <a href="" click.delegate="cancelClicked()">Cancel</a>
-            <button class="btn btn-primary" click.delegate="applyChangesClicked()">Apply</button>
         </p>
     </form>
 
+    <p if.bind="previewList">
+        <button class="btn btn-sm" click.delegate="checkAll()">Check all</button>
+    </p>
     <table if.bind="previewList" class="table">
         <thead>
             <tr>
+                <th></th>
                 <th>Name</th>
                 <th>Age</th>
+                <th>Birth Date</th>
                 <th>Grade</th>
                 <th>Gender</th>
                 <th>Old Club</th>
@@ -35,7 +41,9 @@
         </thead>
         <tbody>
             <tr repeat.for="clubber of previewList" class="">
+                <td><input type="checkbox" checked.bind="clubber.applyChange" if.bind="clubber.isChange" /></td>
                 <td>${ clubber.firstName } ${ clubber.lastName }</td>
+                <td>${ clubber.age }</td>
                 <td>${ clubber.birthDate }</td>
                 <td>${ clubber.grade }</td>
                 <td>${ clubber.gender }</td>

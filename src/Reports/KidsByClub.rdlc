@@ -6,22 +6,25 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>1.73015in</Width>
+              <Width>1.25198in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.5496in</Width>
+              <Width>1.1746in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.12302in</Width>
+              <Width>0.77778in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.58929in</Width>
+              <Width>0.43453in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.74008in</Width>
+              <Width>0.60318in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.74008in</Width>
+              <Width>0.47222in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>1.94047in</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -59,7 +62,6 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
-                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -218,6 +220,38 @@
                       </Paragraphs>
                       <rd:DefaultName>Textbox23</rd:DefaultName>
                       <RepeatWith>Tablix1</RepeatWith>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox3">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Primary Contact</Value>
+                              <Style>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox3</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -424,6 +458,36 @@
                     </Textbox>
                   </CellContents>
                 </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox4">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value />
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox4</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
               </TablixCells>
             </TablixRow>
             <TablixRow>
@@ -615,6 +679,36 @@
                     </Textbox>
                   </CellContents>
                 </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="PrimaryContactName">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!PrimaryContactName.Value</Value>
+                              <Style />
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>PrimaryContactName</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
               </TablixCells>
             </TablixRow>
           </TablixRows>
@@ -627,13 +721,14 @@
             <TablixMember />
             <TablixMember />
             <TablixMember />
+            <TablixMember />
           </TablixMembers>
         </TablixColumnHierarchy>
         <TablixRowHierarchy>
           <TablixMembers>
             <TablixMember>
               <TablixHeader>
-                <Size>1.38492in</Size>
+                <Size>1.20238in</Size>
                 <CellContents>
                   <Textbox Name="Textbox17">
                     <CanGrow>true</CanGrow>
@@ -689,7 +784,7 @@
                 </SortExpression>
               </SortExpressions>
               <TablixHeader>
-                <Size>1.38492in</Size>
+                <Size>1.20238in</Size>
                 <CellContents>
                   <Textbox Name="ClubName">
                     <CanGrow>true</CanGrow>
@@ -744,7 +839,7 @@
             <Value>=Fields!Grade.Value</Value>
           </SortExpression>
         </SortExpressions>
-        <Top>0.24429in</Top>
+        <Top>0.06944in</Top>
         <Height>0.72024in</Height>
         <Width>7.85714in</Width>
         <Style>
@@ -754,10 +849,10 @@
         </Style>
       </Tablix>
     </ReportItems>
-    <Height>1.09176in</Height>
+    <Height>0.85366in</Height>
     <Style />
   </Body>
-  <Width>8in</Width>
+  <Width>8.0496in</Width>
   <Page>
     <PageHeader>
       <Height>0.6369in</Height>
@@ -769,6 +864,7 @@
           <Value>awana_clubs_logo_color_small</Value>
           <MIMEType>image/gif</MIMEType>
           <Sizing>Fit</Sizing>
+          <Left>0.0496in</Left>
           <Height>0.61458in</Height>
           <Width>1.5in</Width>
           <Style>
@@ -795,7 +891,7 @@
           </Paragraphs>
           <rd:DefaultName>textbox10</rd:DefaultName>
           <Top>0.11186in</Top>
-          <Left>1.54167in</Left>
+          <Left>1.59127in</Left>
           <Height>0.49131in</Height>
           <Width>4.375in</Width>
           <ZIndex>1</ZIndex>
@@ -824,7 +920,7 @@
           </Paragraphs>
           <rd:DefaultName>Textbox9</rd:DefaultName>
           <Top>0.11186in</Top>
-          <Left>5.98611in</Left>
+          <Left>6.03571in</Left>
           <Height>0.49131in</Height>
           <Width>1.87103in</Width>
           <ZIndex>2</ZIndex>
@@ -868,7 +964,7 @@
           </Paragraphs>
           <rd:DefaultName>Textbox35</rd:DefaultName>
           <Top>0.02778in</Top>
-          <Left>4.79167in</Left>
+          <Left>4.84127in</Left>
           <Height>0.25in</Height>
           <Width>3.06548in</Width>
           <Style>

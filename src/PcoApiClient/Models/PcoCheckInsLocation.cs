@@ -40,8 +40,8 @@ namespace PcoApiClient.Models
         [JsonProperty("gender")]
         public string Gender { get; set; }
 
-        [JsonProperty("child")]
-        public bool? Child { get; set; }
+        [JsonProperty("child_or_adult")]
+        public string Child { get; set; }
 
 
     }

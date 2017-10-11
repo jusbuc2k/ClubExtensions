@@ -5,29 +5,27 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using PcoApiClient.Models;
+using PcoApiClient;
+using Website.Services;
 
 namespace Website.Controllers
 {
     [Authorize]
     public class ApiController : Controller
     {
-        private readonly PcoApiClient.PcoApiClient _client;
-        private readonly Models.PcoTenant _tenant;
-        private readonly Services.IPeopleCache _peopleCache;
+        private readonly PcoHelper _pco;
 
-        public ApiController(PcoApiClient.PcoApiClient client, Models.PcoTenant tenant)
+        public ApiController(PcoHelper pco)
         {
-            _client = client;
-            _tenant = tenant;
-            //_peopleCache = peopleCache;
+            _pco = pco;
         }
 
         [HttpPost]
         public async Task<dynamic> PreviewClubAssignments()
         {
-            await _client.RefreshList(_tenant.ClubberListID);
-            var locations = await _client.GetList<PcoApiClient.Models.PcoCheckInsLocation>($"check_ins/v2/events/{_tenant.EventID}/locations", pagesToLoad: int.MaxValue);
-            var clubbers = await _client.GetList<PcoApiClient.Models.PcoPeoplePerson>($"people/v2/lists/{_tenant.ClubberListID}/people", pagesToLoad: int.MaxValue, includes: new string[] { "field_data" });
+            await _pco.RefreshClubberList();
+            var locations = await _pco.GetCheckInLocations();
+            var clubbers = await _pco.GetClubbers();
             var assignments = new List<Models.ClubAssignment>();
 
             foreach (var clubber in clubbers.Data)
@@ -36,15 +34,7 @@ namespace Website.Controllers
 
                 var match = locations.Data.OrderBy(o => o.Attributes.Position).LastOrDefault(location =>
                 {
-                    if (location.Attributes.Name.Contains("Girls"))
-                    {
-                        location.Attributes.Gender = "F";
-                    }
-                    else if (location.Attributes.Name.Contains("Boys"))
-                    {
-                        location.Attributes.Gender = "M";
-                    }
-
+                    // If the location has a gender filter, and the user's doesn't match, return false.
                     if (location.Attributes.Gender != null)
                     {
                         if (clubber.Attributes.Gender != location.Attributes.Gender)
@@ -53,8 +43,10 @@ namespace Website.Controllers
                         }
                     }
 
+                    // If the location has a min grade filter
                     if (location.Attributes.GradeMin.HasValue)
                     {
+                        // If the person has no grade value, then we can't determine a match, so return false
                         if (!clubber.Attributes.Grade.HasValue)
                         {
                             return false;
@@ -65,8 +57,10 @@ namespace Website.Controllers
                         }
                     }
 
+                    // If the location has a max grade filter
                     if (location.Attributes.GradeMax.HasValue)
                     {
+                        // if the person has no grade value, then we can't determine a match, so return false
                         if (!clubber.Attributes.Grade.HasValue)
                         {
                             return false;
@@ -77,33 +71,43 @@ namespace Website.Controllers
                         }
                     }
 
+                    // If the location has a min age filter (then it will also have a max)
                     if (location.Attributes.MinAgeInMonths.HasValue)
                     {
+                        // If the person has no birth date, then we can't evaluate
                         if (!clubber.Attributes.BirthDate.HasValue)
                         {
                             return false;
                         }
 
+                        // ageOn is the date relative to which we want to calculate the age
+                        // for rules involving a specific cutoff (e.g. must be 3 years old by August 1st)
                         var ageOn = location.Attributes.AgeOn.HasValue ? location.Attributes.AgeOn.Value : DateTime.Now;
+                        // compute the age in months of the person from the ageOn date
                         var ageInMonths = ageOn.Subtract(clubber.Attributes.BirthDate.Value);
+                        // compute the maximum date on which the person could have been born to match
                         var maxBirthDate = ageOn.AddMonths(-location.Attributes.MinAgeInMonths.Value);
-                        var minBirthDate = DateTime.MinValue;// ageOn.AddMonths(-location.Attributes.MaxAgeInMonths.Value);
+                        // compute the minimum date on which the person could have been born to match
+                        var minBirthDate = ageOn.AddMonths(-location.Attributes.MaxAgeInMonths.Value);
 
+                        // if they are less than the min window, return false
                         if (clubber.Attributes.BirthDate < minBirthDate)
                         {
                             return false;
                         }
 
+                        // if they are greater than the max window, return false
                         if (clubber.Attributes.BirthDate > maxBirthDate)
                         {
                             return false;
                         }
                     }
-
+                    
+                    // If no rules failed, then we assume a match
                     return true;
                 });
 
-                var clubDatum = fieldData.FirstOrDefault(x => x.Relationships["field_definition"].Data.ToObject<PcoApiClient.Models.PcoRecord>().ID == _tenant.ClubFieldDefinitionID);
+                var clubDatum = fieldData.FirstOrDefault(x => x.Relationships.GetData<PcoApiClient.Models.PcoRecord>("field_definition").ID == _pco.Tenant.ClubFieldDefinitionID);
 
                 assignments.Add(new Models.ClubAssignment()
                 {
@@ -115,7 +119,7 @@ namespace Website.Controllers
                     Grade = clubber.Attributes.Grade,
                     ClubDatumID = clubDatum == null ? null : clubDatum.ID,
                     OldClubName = clubDatum == null ? null : clubDatum.Attributes.Value,
-                    NewClubName = match.Attributes.Name
+                    NewClubName = match == null ? null : match.Attributes.Name
                 });
             }
 
@@ -136,29 +140,16 @@ namespace Website.Controllers
 
             foreach (var clubber in model)
             {
-                var datum = new PcoApiClient.Models.PcoFieldDatum()
-                {
-                    FieldDefinitionID = _tenant.ClubFieldDefinitionID,
-                    Value = clubber.NewClubName
-                };
-
-                if (clubber.ClubDatumID == null)
-                {
-                    await _client.CreatePersonFieldData(clubber.PersonID, datum);
-                }
-                else
-                {
-                    await _client.UpdatePersonFieldData(clubber.PersonID, clubber.ClubDatumID, datum);
-                }
+                await _pco.UpdatePersonClub(clubber.PersonID, clubber.ClubDatumID, clubber.NewClubName);
             }
 
             return this.NoContent();
         }
         
         [Route("[controller]/Cache")]
-        public async Task<IActionResult> CheckCache()
+        public IActionResult CheckCache()
         {
-            return View();
+            return this.NoContent();
         }
 
         //[Route("[controller]/Cache/Refresh")]
@@ -167,9 +158,6 @@ namespace Website.Controllers
         //{
         //    var clubbers = await _pcoClient.GetList<PcoPeoplePerson>($"people/v2/lists/{_tenant.ClubberListID}/people", pagesToLoad: int.MaxValue, includes: new string[] { "field_data", "households" });
         //    var parents = await _pcoClient.GetList<PcoPeoplePerson>($"people/v2/households", pagesToLoad: int.MaxValue, includes: new string[] { "phone_numbers", "emails" });
-            
-
-
         //}
     }
 }
