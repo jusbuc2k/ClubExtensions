@@ -51,10 +51,10 @@
                                 <Width>3.61458in</Width>
                               </TablixColumn>
                               <TablixColumn>
-                                <Width>0.75in</Width>
+                                <Width>0.47619in</Width>
                               </TablixColumn>
                               <TablixColumn>
-                                <Width>0.95834in</Width>
+                                <Width>1.23215in</Width>
                               </TablixColumn>
                               <TablixColumn>
                                 <Width>0.27083in</Width>
@@ -428,7 +428,7 @@
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
-                                                <Value>Other</Value>
+                                                <Value>Extra Credit / Other</Value>
                                                 <Style>
                                                   <FontSize>9pt</FontSize>
                                                 </Style>
@@ -2100,7 +2100,7 @@
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
-                                                <Value>1 each</Value>
+                                                <Value>5 each (2 for questions, 3 for memory verse)</Value>
                                                 <Style>
                                                   <Color>DimGray</Color>
                                                 </Style>
@@ -2155,7 +2155,7 @@
                                   </TablixCell>
                                   <TablixCell>
                                     <CellContents>
-                                      <Textbox Name="Textbox35">
+                                      <Textbox Name="Textbox12">
                                         <CanGrow>true</CanGrow>
                                         <KeepTogether>true</KeepTogether>
                                         <Paragraphs>
@@ -2169,7 +2169,7 @@
                                             <Style />
                                           </Paragraph>
                                         </Paragraphs>
-                                        <rd:DefaultName>Textbox35</rd:DefaultName>
+                                        <rd:DefaultName>Textbox12</rd:DefaultName>
                                         <Style>
                                           <Border>
                                             <Style>Solid</Style>
@@ -2493,6 +2493,7 @@
                       <KeepTogether>true</KeepTogether>
                       <Style />
                     </Rectangle>
+                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
               </TablixCells>
