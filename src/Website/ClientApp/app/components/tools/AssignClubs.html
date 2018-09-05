@@ -1,4 +1,7 @@
 <template>
+    <require from="../date-format"></require>
+    <require from="../grade-format"></require>
+
     <h1>Assign Clubs</h1>
 
     <div class="alert alert-danger" if.bind="errorMessage">
@@ -44,11 +47,12 @@
                 <td><input type="checkbox" checked.bind="clubber.applyChange" if.bind="clubber.isChange" /></td>
                 <td>${ clubber.firstName } ${ clubber.lastName }</td>
                 <td>${ clubber.age }</td>
-                <td>${ clubber.birthDate }</td>
-                <td>${ clubber.grade }</td>
+                <td>${ clubber.birthDate | dateFormat }</td>
+                <td>${ clubber.grade | gradeFormat }</td>
                 <td>${ clubber.gender }</td>
                 <td>${ clubber.oldClubName }</td>
-                <td>${ clubber.newClubName }
+                <td>
+                    ${ clubber.newClubName }
                     <span if.bind="clubber.isChange" class="glyphicon glyphicon-asterisk" aria-hidden="true"></span>
                 </td>
             </tr>

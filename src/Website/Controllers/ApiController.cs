@@ -80,9 +80,28 @@ namespace Website.Controllers
                             return false;
                         }
 
+                        var yearForAgeOn = DateTime.Now.Year;
+
+                        // if the month is less than or equal to 4, use last year. This needs to be hacked up like 
+                        // crazy to be multi-tenant capable
+                        if (DateTime.Now.Month <= 4)
+                        {
+                            yearForAgeOn = DateTime.Now.AddYears(-1).Year;
+                        }
+
+                        DateTime ageOn;
+
                         // ageOn is the date relative to which we want to calculate the age
                         // for rules involving a specific cutoff (e.g. must be 3 years old by August 1st)
-                        var ageOn = location.Attributes.AgeOn.HasValue ? location.Attributes.AgeOn.Value : DateTime.Now;
+                        if (location.Attributes.AgeOn.HasValue)
+                        {
+                            ageOn = new DateTime(yearForAgeOn, location.Attributes.AgeOn.Value.Month, location.Attributes.AgeOn.Value.Day);
+                        }
+                        else
+                        {
+                            ageOn = DateTime.Now;
+                        }
+                        
                         // compute the age in months of the person from the ageOn date
                         var ageInMonths = ageOn.Subtract(clubber.Attributes.BirthDate.Value);
                         // compute the maximum date on which the person could have been born to match
