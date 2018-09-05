@@ -92,20 +92,20 @@ namespace Website.Services
 
                 for (int i = 0; i < primaryContactIDs.Count; i += 25)
                 {
-                    var idFilter = string.Join(",", primaryContactIDs.GetRange(i, Math.Min(25, primaryContactIDs.Count-i)));
-                    var phones = await _pcoClient.GetList<PcoApiClient.Models.PcoPhoneNumber>($"people/v2/people/{idFilter}/phone_numbers", pagesToLoad: int.MaxValue, includes: new string[] { "phone_numbers", "emails" });
-                    var primaryPhone = phones.Data.FirstOrDefault(x => x.Attributes.Primary);
+                    //var idFilter = string.Join(",", primaryContactIDs.GetRange(i, Math.Min(25, primaryContactIDs.Count-i)));
+                    //var phones = await _pcoClient.GetList<PcoApiClient.Models.PcoPhoneNumber>($"people/v2/people/{idFilter}/phone_numbers", pagesToLoad: int.MaxValue, includes: new string[] { "phone_numbers", "emails" });
+                    //var primaryPhone = phones.Data.FirstOrDefault(x => x.Attributes.Primary);
 
-                    if (primaryPhone == null)
-                    {
-                        primaryPhone = phones.Data.First();
-                    }
+                    //if (primaryPhone == null)
+                    //{
+                    //    primaryPhone = phones.Data.First();
+                    //}
 
-                    if (primaryPhone != null)
-                    {
-                        result.Data.First(x => x.Attributes.)
-                    }
-                    // result.Data
+                    //if (primaryPhone != null)
+                    //{
+                    //    result.Data.First(x => x.Attributes.)
+                    //}
+                    //// result.Data
                 }
 
                 cacheEntry.SlidingExpiration = TimeSpan.FromMinutes(15);
