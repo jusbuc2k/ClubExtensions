@@ -92,9 +92,20 @@ namespace Website.Services
 
                 for (int i = 0; i < primaryContactIDs.Count; i += 25)
                 {
-                    var idFilter = string.Join(",", primaryContactIDs.GetRange(i, Math.Min(25, primaryContactIDs.Count-i)));
-                    var contacts = await _pcoClient.GetList<PcoApiClient.Models.PcoPeoplePerson>($"people/v2/people?where[id]={idFilter}", pagesToLoad: int.MaxValue, includes: new string[] { "phone_numbers", "emails" });
-                    // result.Data
+                    //var idFilter = string.Join(",", primaryContactIDs.GetRange(i, Math.Min(25, primaryContactIDs.Count-i)));
+                    //var phones = await _pcoClient.GetList<PcoApiClient.Models.PcoPhoneNumber>($"people/v2/people/{idFilter}/phone_numbers", pagesToLoad: int.MaxValue, includes: new string[] { "phone_numbers", "emails" });
+                    //var primaryPhone = phones.Data.FirstOrDefault(x => x.Attributes.Primary);
+
+                    //if (primaryPhone == null)
+                    //{
+                    //    primaryPhone = phones.Data.First();
+                    //}
+
+                    //if (primaryPhone != null)
+                    //{
+                    //    result.Data.First(x => x.Attributes.)
+                    //}
+                    //// result.Data
                 }
 
                 cacheEntry.SlidingExpiration = TimeSpan.FromMinutes(15);
@@ -126,7 +137,8 @@ namespace Website.Services
                     SubGroup = subGroup,
                     Grade = person.Attributes.Grade,
                     BirthDate = person.Attributes.BirthDate,
-                    Gender = person.Attributes.Gender
+                    Gender = person.Attributes.Gender,
+                    PrimaryContactPhone = person.Relationships.GetData<IEnumerable<PcoPhoneNumber>>("phone_numbers").Select(s => s.Number).FirstOrDefault()
                 };
 
                 var household = people.GetRelated<PcoPeopleHousehold>(person, "households").FirstOrDefault();
