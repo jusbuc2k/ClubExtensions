@@ -528,7 +528,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value># of Extra Credit Sections</Value>
+                                                    <Value># of Extra Credit</Value>
                                                     <Style>
                                                       <FontSize>9pt</FontSize>
                                                     </Style>
@@ -2234,8 +2234,9 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>5 each (2 for questions, 3 for memory verse)</Value>
+                                                    <Value>5 each (2 for q's, 3 for verse)</Value>
                                                     <Style>
+                                                      <FontSize>9pt</FontSize>
                                                       <Color>DimGray</Color>
                                                     </Style>
                                                   </TextRun>
@@ -2265,8 +2266,9 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>1 each</Value>
+                                                    <Value>5 for Gold, 3 for Silver</Value>
                                                     <Style>
+                                                      <FontSize>9pt</FontSize>
                                                       <Color>DimGray</Color>
                                                     </Style>
                                                   </TextRun>
