@@ -139,13 +139,13 @@
                                     <Width>0.25in</Width>
                                   </TablixColumn>
                                   <TablixColumn>
-                                    <Width>0.59722in</Width>
+                                    <Width>3.65451in</Width>
                                   </TablixColumn>
                                   <TablixColumn>
-                                    <Width>1.85764in</Width>
+                                    <Width>0.86806in</Width>
                                   </TablixColumn>
                                   <TablixColumn>
-                                    <Width>2.86806in</Width>
+                                    <Width>0.80035in</Width>
                                   </TablixColumn>
                                   <TablixColumn>
                                     <Width>0.27083in</Width>
@@ -456,18 +456,8 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>First Completed</Value>
-                                                    <Style>
-                                                      <FontSize>9pt</FontSize>
-                                                    </Style>
-                                                  </TextRun>
-                                                </TextRuns>
-                                                <Style />
-                                              </Paragraph>
-                                              <Paragraph>
-                                                <TextRuns>
-                                                  <TextRun>
-                                                    <Value>Section #</Value>
+                                                    <Value>Completed Sections
+(Write sect. numbers)</Value>
                                                     <Style>
                                                       <FontSize>9pt</FontSize>
                                                     </Style>
@@ -485,7 +475,6 @@
                                               <PaddingRight>2pt</PaddingRight>
                                               <PaddingTop>2pt</PaddingTop>
                                               <PaddingBottom>2pt</PaddingBottom>
-                                              <WritingMode>Rotate270</WritingMode>
                                             </Style>
                                           </Textbox>
                                         </CellContents>
@@ -498,7 +487,9 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value># of Completed Sections</Value>
+                                                    <Value>Silver 
+Extra
+Credit</Value>
                                                     <Style>
                                                       <FontSize>9pt</FontSize>
                                                     </Style>
@@ -528,7 +519,9 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value># of Extra Credit</Value>
+                                                    <Value>Gold
+Extra
+Credit</Value>
                                                     <Style>
                                                       <FontSize>9pt</FontSize>
                                                     </Style>
@@ -2019,6 +2012,7 @@
                                                   <TextRun>
                                                     <Value>1</Value>
                                                     <Style>
+                                                      <FontSize>9pt</FontSize>
                                                       <Color>DimGray</Color>
                                                     </Style>
                                                   </TextRun>
@@ -2050,6 +2044,7 @@
                                                   <TextRun>
                                                     <Value>1</Value>
                                                     <Style>
+                                                      <FontSize>9pt</FontSize>
                                                       <Color>DimGray</Color>
                                                     </Style>
                                                   </TextRun>
@@ -2081,6 +2076,7 @@
                                                   <TextRun>
                                                     <Value>1</Value>
                                                     <Style>
+                                                      <FontSize>9pt</FontSize>
                                                       <Color>DimGray</Color>
                                                     </Style>
                                                   </TextRun>
@@ -2112,6 +2108,7 @@
                                                   <TextRun>
                                                     <Value>1</Value>
                                                     <Style>
+                                                      <FontSize>9pt</FontSize>
                                                       <Color>DimGray</Color>
                                                     </Style>
                                                   </TextRun>
@@ -2143,6 +2140,7 @@
                                                   <TextRun>
                                                     <Value>1</Value>
                                                     <Style>
+                                                      <FontSize>9pt</FontSize>
                                                       <Color>DimGray</Color>
                                                     </Style>
                                                   </TextRun>
@@ -2174,6 +2172,7 @@
                                                   <TextRun>
                                                     <Value>5</Value>
                                                     <Style>
+                                                      <FontSize>9pt</FontSize>
                                                       <Color>DimGray</Color>
                                                     </Style>
                                                   </TextRun>
@@ -2203,8 +2202,9 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value />
+                                                    <Value>5 each</Value>
                                                     <Style>
+                                                      <FontSize>9pt</FontSize>
                                                       <Color>DimGray</Color>
                                                     </Style>
                                                   </TextRun>
@@ -2234,7 +2234,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>5 each (2 for q's, 3 for verse)</Value>
+                                                    <Value>3 each</Value>
                                                     <Style>
                                                       <FontSize>9pt</FontSize>
                                                       <Color>DimGray</Color>
@@ -2266,7 +2266,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>5 for Gold, 3 for Silver</Value>
+                                                    <Value>5 each</Value>
                                                     <Style>
                                                       <FontSize>9pt</FontSize>
                                                       <Color>DimGray</Color>
