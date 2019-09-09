@@ -72,27 +72,18 @@ namespace Website.Services
             {
                 await this.RefreshClubberList();
 
-                // invalidate the contact cache
-                _cache.Remove(CreateCacheKey("Contacts", _tenant));
-
                 cacheEntry.SlidingExpiration = TimeSpan.FromMinutes(15);
 
                 return await this.GetClubbers(new string[] { "field_data", "households" });
             });
 
-            var primaryContacts = await _cache.GetOrCreateAsync(CreateCacheKey("Contacts", _tenant), async (cacheEntry) => {
-                var primaryContactIDs = people.Included.Where(x => x.Type == "Household")
-                    .Select(s => s.Attributes.ToObject<PcoPeopleHousehold>())
-                    .Select(s => s.PrimaryContactID)
-                    .Distinct()
-                    .ToList();
+            var parents = await _cache.GetOrCreateAsync(CreateCacheKey("Parents", _tenant), async (cacheEntry) =>
+            {
+                var data = await _pcoClient.GetList<PcoPeoplePerson>($"people/v2/lists/{_tenant.ParentListID}/people", pagesToLoad: int.MaxValue, includes: new string[] { "phone_numbers","emails" });
 
-                var result = new PcoListResponse<PcoPeoplePerson>();
-                var list = new List<PcoPeoplePerson>();
-            
                 cacheEntry.SlidingExpiration = TimeSpan.FromMinutes(15);
 
-                return result;
+                return data;
             });
 
             foreach (var person in people.Data)
@@ -110,7 +101,7 @@ namespace Website.Services
                 var subGroup = field_data.Where(x => x.Relationships.GetData<PcoApiClient.Models.PcoRecord>("field_definition").ID == _tenant.SubGroupFieldDefinitionID)
                     .Select(s => s.Attributes.Value)
                     .SingleOrDefault();
-
+                
                 var reportPerson = new ClubExtensions.Reports.Models.ReportPerson()
                 {
                     FirstName = person.Attributes.FirstName,
@@ -120,7 +111,7 @@ namespace Website.Services
                     Grade = person.Attributes.Grade,
                     BirthDate = person.Attributes.BirthDate,
                     Gender = person.Attributes.Gender
-//                    PrimaryContactPhone = person.Relationships.GetData<IEnumerable<PcoPhoneNumber>>("phone_numbers").Select(s => s.Number).FirstOrDefault()
+//                  PrimaryContactPhone = person.Relationships.GetData<IEnumerable<PcoPhoneNumber>>("phone_numbers").Select(s => s.Number).FirstOrDefault()
                 };
 
                 var household = people.GetRelated<PcoPeopleHousehold>(person, "households").FirstOrDefault();
@@ -131,16 +122,20 @@ namespace Website.Services
                     reportPerson.HouseholdName = household.Attributes.Name;
                     reportPerson.PrimaryContactName = household.Attributes.PrimaryContactName;
 
-                    //var primaryContact = primaryContacts.Data.SingleOrDefault(x => x.ID == household.Attributes.PrimaryContactID);
+                    var primaryContactPhone = parents.Data.Where(x => x.ID == household.Attributes.PrimaryContactID)
+                        .SelectMany(pr => parents.GetRelated<PcoPhoneNumber>(pr, "phone_numbers"))
+                        .OrderByDescending(x => x.Attributes.Primary)
+                        .Select(s => s.Attributes.Number)
+                        .FirstOrDefault();
 
-                    //if (primaryContact != null)
-                    //{
-                    //    var primaryPhone = primaryContacts.GetRelated<PcoPhoneNumber>(primaryContact, "phone_numbers").OrderBy(o => !o.Attributes.Primary).FirstOrDefault();
-                    //    var primaryEmail = primaryContacts.GetRelated<PcoEmailAddress>(primaryContact, "emails").OrderBy(o => !o.Attributes.Primary).FirstOrDefault();
+                    var primaryContactEmail = parents.Data.Where(x => x.ID == household.Attributes.PrimaryContactID)
+                        .SelectMany(pr => parents.GetRelated<PcoEmailAddress>(pr, "emails"))
+                        .Where(x => x.Attributes.Primary)
+                        .Select(s => s.Attributes.Address)
+                        .FirstOrDefault();
 
-                    //    reportPerson.PrimaryContactEmail = primaryEmail?.Attributes.Address;
-                    //    reportPerson.PrimaryContactPhone = primaryPhone?.Attributes.Number;
-                    //}
+                    reportPerson.PrimaryContactPhone = primaryContactPhone;
+                    reportPerson.PrimaryContactEmail = primaryContactEmail;
                 }
 
                 reportData.Add(reportPerson);
