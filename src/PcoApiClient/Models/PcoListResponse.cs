@@ -17,11 +17,11 @@ namespace PcoApiClient.Models
 
         public IEnumerable<PcoDataRecord<R>> GetRelated<R>(PcoDataRecord<T> record, string relationshipName)
         {
-            var relationships = this.Data
-                .Where(x => x.ID == record.ID)
-                .SelectMany(s => s.Relationships[relationshipName].GetDataAsList());
+            //var relationships = this.Data
+            //    .Where(x => x.ID == record.ID)
+            //    .SelectMany(s => s.Relationships[relationshipName].GetDataAsList());
 
-            return relationships.SelectMany(
+            return record.Relationships[relationshipName].GetDataAsList().SelectMany(
                 rel => this.Included.Where(x => x.Type == rel.Type && x.ID == rel.ID).Select(s => new PcoDataRecord<R>()
                 {
                     ID = s.ID,
