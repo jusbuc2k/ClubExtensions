@@ -110,8 +110,8 @@ namespace Website.Services
                     SubGroup = subGroup,
                     Grade = person.Attributes.Grade,
                     BirthDate = person.Attributes.BirthDate,
-                    Gender = person.Attributes.Gender
-//                  PrimaryContactPhone = person.Relationships.GetData<IEnumerable<PcoPhoneNumber>>("phone_numbers").Select(s => s.Number).FirstOrDefault()
+                    Gender = person.Attributes.Gender,
+                    MedicalNotes = person.Attributes.MedicalNotes
                 };
 
                 var household = people.GetRelated<PcoPeopleHousehold>(person, "households").FirstOrDefault();

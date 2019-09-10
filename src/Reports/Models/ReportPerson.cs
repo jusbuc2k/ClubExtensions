@@ -79,5 +79,7 @@ namespace ClubExtensions.Reports.Models
         public DateTime? LastAttendance { get; set; }
 
         public string Gender { get; set; }
+
+        public string MedicalNotes { get; set; }
     }
 }
