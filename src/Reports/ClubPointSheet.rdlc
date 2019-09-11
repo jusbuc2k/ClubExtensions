@@ -487,9 +487,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>Silver 
-Extra
-Credit</Value>
+                                                    <Value>=Code.GetCustomHeader1(Fields!ClubName.Value)</Value>
                                                     <Style>
                                                       <FontSize>9pt</FontSize>
                                                     </Style>
@@ -519,9 +517,7 @@ Credit</Value>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>Gold
-Extra
-Credit</Value>
+                                                    <Value>=Code.GetCustomHeader2(Fields!ClubName.Value)</Value>
                                                     <Style>
                                                       <FontSize>9pt</FontSize>
                                                     </Style>
@@ -2234,7 +2230,7 @@ Credit</Value>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>3 each</Value>
+                                                    <Value>=Code.GetCustomHeader1Hint(Fields!ClubName.Value)</Value>
                                                     <Style>
                                                       <FontSize>9pt</FontSize>
                                                       <Color>DimGray</Color>
@@ -2266,7 +2262,7 @@ Credit</Value>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>5 each</Value>
+                                                    <Value>=Code.GetCustomHeader2Hint(Fields!ClubName.Value)</Value>
                                                     <Style>
                                                       <FontSize>9pt</FontSize>
                                                       <Color>DimGray</Color>
@@ -2287,6 +2283,7 @@ Credit</Value>
                                               <PaddingBottom>2pt</PaddingBottom>
                                             </Style>
                                           </Textbox>
+                                          <rd:Selected>true</rd:Selected>
                                         </CellContents>
                                       </TablixCell>
                                       <TablixCell>
@@ -2600,7 +2597,6 @@ Credit</Value>
                           <KeepTogether>true</KeepTogether>
                           <Style />
                         </Rectangle>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
@@ -2667,6 +2663,37 @@ Credit</Value>
       <NumberOfRows>2</NumberOfRows>
     </GridLayoutDefinition>
   </ReportParametersLayout>
+  <Code>Public Function GetCustomHeader1(ByVal clubName As String) As String
+  If clubName.StartsWith("T&amp;T") Then  
+	Return "Silver Extra Credit"
+   Else
+	Return "Extra Credit"
+   End If
+End Function  
+
+Public Function GetCustomHeader2(ByVal clubName As String) As String  
+   If clubName.StartsWith("T&amp;T") Then  
+	Return "Gold Extra Credit"
+   Else
+	Return "Misc"
+   End If
+End Function  
+
+Public Function GetCustomHeader1Hint(ByVal clubName As String) As String  
+   If clubName.StartsWith("T&amp;T") Then  
+	Return "3 Each"
+   Else
+	Return ""
+   End If
+End Function  
+
+Public Function GetCustomHeader2Hint(ByVal clubName As String) As String  
+   If clubName.StartsWith("T&amp;T") Then  
+	Return "5 Each"
+   Else
+	Return ""
+   End If
+End Function  </Code>
   <EmbeddedImages>
     <EmbeddedImage Name="awana_clubs_logo_color_small">
       <MIMEType>image/gif</MIMEType>

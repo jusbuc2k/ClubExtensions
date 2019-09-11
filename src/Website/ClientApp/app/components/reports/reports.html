@@ -8,4 +8,13 @@
         <a class="list-group-item" target="_blank" href="/Report/KidsByClub">Club Rosters</a>
     </div>
 
+    <h2>Report Tools</h2>
+    <div>
+        <button click.delegate="clearCache()" class="btn btn-default">Clear Report Data Cache</button>
+    </div>
+
+    <div class="alert alert-success alert-dismissable" if.bind="cacheClearSuccess">
+        Cache was cleared successfully.
+    </div>
+
 </template>

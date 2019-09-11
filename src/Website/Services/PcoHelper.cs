@@ -48,6 +48,11 @@ namespace Website.Services
             return _pcoClient.RefreshList(_tenant.ClubberListID);
         }
 
+        public Task RefeshParentList()
+        {
+            return _pcoClient.RefreshList(_tenant.ParentListID);
+        }
+
         public Task<PcoListResponse<PcoCheckInsLocation>> GetCheckInLocations()
         {
            return _pcoClient.GetList<PcoApiClient.Models.PcoCheckInsLocation>($"check_ins/v2/events/{_tenant.EventID}/locations", pagesToLoad: int.MaxValue);
@@ -72,16 +77,18 @@ namespace Website.Services
             {
                 await this.RefreshClubberList();
 
-                cacheEntry.SlidingExpiration = TimeSpan.FromMinutes(15);
+                cacheEntry.SlidingExpiration = TimeSpan.FromMinutes(30);
 
                 return await this.GetClubbers(new string[] { "field_data", "households" });
             });
 
             var parents = await _cache.GetOrCreateAsync(CreateCacheKey("Parents", _tenant), async (cacheEntry) =>
             {
+                await this.RefeshParentList();
+
                 var data = await _pcoClient.GetList<PcoPeoplePerson>($"people/v2/lists/{_tenant.ParentListID}/people", pagesToLoad: int.MaxValue, includes: new string[] { "phone_numbers","emails" });
 
-                cacheEntry.SlidingExpiration = TimeSpan.FromMinutes(15);
+                cacheEntry.SlidingExpiration = TimeSpan.FromMinutes(30);
 
                 return data;
             });
@@ -160,6 +167,12 @@ namespace Website.Services
             {
                 await _pcoClient.UpdatePersonFieldData(personID, clubDatumID, datum);
             }
+        }
+
+        public void ClearCache()
+        {
+            _cache.Remove(CreateCacheKey("Clubbers", _tenant));
+            _cache.Remove(CreateCacheKey("Parents", _tenant));
         }
     }
 }

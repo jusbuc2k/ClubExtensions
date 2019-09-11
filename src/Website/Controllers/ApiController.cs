@@ -11,6 +11,7 @@ using Website.Services;
 namespace Website.Controllers
 {
     [Authorize]
+    [Route("[controller]")]
     public class ApiController : Controller
     {
         private readonly PcoHelper _pco;
@@ -20,7 +21,7 @@ namespace Website.Controllers
             _pco = pco;
         }
 
-        [HttpPost]
+        [HttpPost("PreviewClubAssignments")]
         public async Task<dynamic> PreviewClubAssignments()
         {
             await _pco.RefreshClubberList();
@@ -149,7 +150,7 @@ namespace Website.Controllers
             };
         }
 
-        [HttpPost]
+        [HttpPost("AssignClubs")]
         public async Task<IActionResult> AssignClubs([FromBody]IEnumerable<Models.ClubAssignment> model)
         {
             if (model == null || model.Count() <= 0)
@@ -165,10 +166,18 @@ namespace Website.Controllers
             return this.NoContent();
         }
         
-        [Route("[controller]/Cache")]
+        [HttpGet("Cache/Check")]
         public IActionResult CheckCache()
         {
             return this.NoContent();
+        }
+
+        [HttpPost("Cache/Reset")]
+        public IActionResult ResetCache()
+        {
+            _pco.ClearCache();
+
+            return NoContent();
         }
 
         //[Route("[controller]/Cache/Refresh")]

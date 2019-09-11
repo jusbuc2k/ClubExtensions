@@ -29,6 +29,8 @@ namespace Website.Controllers
 
             var reportData = await _pco.GetClubberReportCache();
 
+            reportData = reportData.Where(x => !string.IsNullOrEmpty(x.ClubName));
+
             var buffer = ClubExtensions.Reports.ReportHelper.RenderReport("ClubPointSheet", "ReportData", reportData, "pdf", out mimeType);
 
             return new FileContentResult(buffer, mimeType);
